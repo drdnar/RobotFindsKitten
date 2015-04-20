@@ -18,6 +18,12 @@
 	ldir
 	
 	ld	(savedSp), sp
+	ld	hl, fontWidthTable
+	ld	(fontWidthsPtr), hl
+	ld	hl, fontDataTable
+	ld	(fontDataPtr), hl
+	ld	a, (font)
+	ld	(fontHeight), a
 	
 	call	ClearScreen
 
