@@ -27,6 +27,7 @@
 	
 	call	ClearScreen
 
+
 Quit:
 	ld	sp, (savedSp)
 	call	FixLcdMode
@@ -39,6 +40,7 @@ GetKey:
 	jr	GetKey
 
 
+#include "dehuffman.asm"
 #include "text.asm"
 #include "routines.asm"
 #include "font.asm"
