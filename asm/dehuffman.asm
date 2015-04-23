@@ -24,7 +24,7 @@ GetMessage:
 	inc	hl
 	ld	d, (hl)
 	inc	hl
-	ld	de, (dataFileLoc)
+	ld	hl, (dataFileLoc)
 	add	hl, de
 	ld	(currentReadLoc), hl
 	ld	a, 1
@@ -36,7 +36,7 @@ DeHuffman:
 	ld	ix, itemCacheSize
 	ld	de, itemCache
 deHuffmanLoop:	
-	ld	hl, huffmanTable
+	ld	hl, (huffmanTable)
 deHuffmanInnerLoop:
 	ld	a, (hl)
 	bit	7, a

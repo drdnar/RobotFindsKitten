@@ -79,16 +79,24 @@ saveFlags:
 	
 dataFileFound:
 	ld	(savedSp), sp
+	; Get pointer to Huffman decode tree
+	ld	hl, (itemCount)
+	add	hl, hl
+	ld	de, objTblOffset
+	add	hl, de
+	ld	de, (dataFileLoc)
+	add	hl, de
+	ld	(huffmanTable), hl
+	
+	; Text driver
 	ld	hl, fontWidthTable
 	ld	(fontWidthsPtr), hl
 	ld	hl, fontDataTable
 	ld	(fontDataPtr), hl
 	ld	a, (font)
 	ld	(fontHeight), a
-	
 	call	SetTextMode
 	call	ClearScreen
-	
 	ld	a, 255
 	ld	(textColors), a
 	ld	hl, 0
@@ -97,9 +105,6 @@ dataFileFound:
 	
 	ld	hl, titleText
 	call	PutS
-	
-	
-	
 	
 	
 	

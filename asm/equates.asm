@@ -6,7 +6,7 @@ chBackspace	.equ	03h
 chDel		.equ	03h
 ch1stPrintableChar	.equ	4
 
-objTblOffset	.equ	12
+objTblOffset	.equ	12	; Comes from structure of file
 
 ;===============================================================================
 ;====== Vars ===================================================================
@@ -32,7 +32,7 @@ currentReadLoc	.equ	dataFileLoc + 3
 currentBit	.equ	currentReadLoc + 3
 currentByte	.equ	currentBit + 1
 huffmanTable	.equ	currentByte + 1
-itemCache	.equ	huffmanTable + 1024
+itemCache	.equ	huffmanTable + 3
 itemCacheSize	.equ	1024
 ; Game
 objectArray	.equ	itemCache + itemCacheSize
