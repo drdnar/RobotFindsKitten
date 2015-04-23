@@ -9,12 +9,13 @@ SetTextMode:
 ;  - Whatever
 	ld	hl, lcdBpp8 | lcdPwr | lcdBgr
 	ld	(mpLcdCtrl), hl
-	ld	de, mpLcdPalette
-	or	a
-	sbc	hl, hl
-	add	hl, de
-	inc	de
-	ld	(hl), 0
+	ld	hl, mpLcdPalette
+	ld	de, mpLcdPalette + 1
+;	or	a
+;	sbc	hl, hl
+;	add	hl, de
+;	inc	de
+	ld	(hl), 00h
 	ldi
 	ldi
 	ld	(hl), 20h
@@ -90,6 +91,32 @@ NewLine:
 	xor	a
 	ld	(lcdRow), a
 	ret
+
+
+;------ PutS -------------------------------------------------------------------
+PutS:
+; Displays a string.  If the string contains control codes, those codes are
+; parsed.
+; Input:
+;  - HL: String to show
+; Output:
+;  - String shown
+;  - HL advanced to the byte after the null terminator.
+; Destroys:
+;  - AF
+	ld	a, (hl)
+	or	a
+	inc	hl
+	ret	z
+	cp	chNewLine
+	jr	z, putSNewLine
+	call	PutC
+	jr	PutS
+putSNewLine:
+	push	hl
+	call	NewLine
+	pop	hl
+	jr	PutS
 
 
 ;------ PutC -------------------------------------------------------------------
@@ -177,41 +204,41 @@ PutCLineLoop:
 PutCBytesLoop:
 	ld	a, (ix)
 	inc	ix
-	rrca
+	rlca
 	jr	c, PutCSetBit0
 	ld	(hl), d
 	inc	hl
-	rrca
+	rlca
 	jr	c, PutCSetBit1
 PutCResetBit1:
 	ld	(hl), d
 	inc	hl
-	rrca
+	rlca
 	jr	c, PutCSetBit2
 PutCResetBit2:
 	ld	(hl), d
 	inc	hl
-	rrca
+	rlca
 	jr	c, PutCSetBit3
 PutCResetBit3:
 	ld	(hl), d
 	inc	hl
-	rrca
+	rlca
 	jr	c, PutCSetBit4
 PutCResetBit4:
 	ld	(hl), d
 	inc	hl
-	rrca
+	rlca
 	jr	c, PutCSetBit5
 PutCResetBit5:
 	ld	(hl), d
 	inc	hl
-	rrca
+	rlca
 	jr	c, PutCSetBit6
 PutCResetBit6:
 	ld	(hl), d
 	inc	hl
-	rrca
+	rlca
 	jr	c, PutCSetBit7
 PutCResetBit7:
 	ld	(hl), d
@@ -221,37 +248,37 @@ PutCResetBit7:
 PutCSetBit0:
 	ld	(hl), e
 	inc	hl
-	rrca
+	rlca
 	jr	nc, PutCResetBit1
 PutCSetBit1:
 	ld	(hl), e
 	inc	hl
-	rrca
+	rlca
 	jr	nc, PutCResetBit2
 PutCSetBit2:
 	ld	(hl), e
 	inc	hl
-	rrca
+	rlca
 	jr	nc, PutCResetBit3
 PutCSetBit3:
 	ld	(hl), e
 	inc	hl
-	rrca
+	rlca
 	jr	nc, PutCResetBit4
 PutCSetBit4:
 	ld	(hl), e
 	inc	hl
-	rrca
+	rlca
 	jr	nc, PutCResetBit5
 PutCSetBit5:
 	ld	(hl), e
 	inc	hl
-	rrca
+	rlca
 	jr	nc, PutCResetBit6
 PutCSetBit6:
 	ld	(hl), e
 	inc	hl
-	rrca
+	rlca
 	jr	nc, PutCResetBit7
 PutCSetBit7:
 	ld	(hl), e
@@ -265,7 +292,7 @@ PutCFinalBits:
 	ld	a, (ix)
 	inc	ix
 PutCFinalBitsLoop:
-	rrca
+	rlca
 	jr	c, PutCFinalSetBit
 	ld	(hl), d
 	inc	hl

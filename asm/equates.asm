@@ -12,6 +12,8 @@ objTblOffset	.equ	12
 ;====== Vars ===================================================================
 ;===============================================================================
 
+someFlags	.equ	-128
+
 vars		.equ	pixelShadow2
 
 savedSp		.equ	vars
@@ -27,7 +29,9 @@ fontDataPtr	.equ	fontWidthsPtr + 3
 ; Huffman & messages
 dataFileLoc	.equ	fontDataPtr + 3
 currentReadLoc	.equ	dataFileLoc + 3
-huffmanTable	.equ	currentReadLoc + 3
+currentBit	.equ	currentReadLoc + 3
+currentByte	.equ	currentBit + 1
+huffmanTable	.equ	currentByte + 1
 itemCache	.equ	huffmanTable + 1024
 itemCacheSize	.equ	1024
 ; Game
@@ -39,7 +43,7 @@ seed1		.equ	randomVal
 seed2		.equ	randomVal + 2
 rotationTimer	.equ	seed2 + 2
 itemCount	.equ	rotationTimer + 1
-objectCount	.equ	itemCount + 2
+objectCount	.equ	itemCount + 3
 foundObject	.equ	objectCount + 1
 stringOffset	.equ	foundObject + 1
 stringStage	.equ	stringOffset + 2

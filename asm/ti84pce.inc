@@ -244,7 +244,7 @@ __frustof       EQU  00002C8h
 
 ;====== System Calls ===========================================================
 
-_OsSize         EQU  0020104h ; Not actually a routine, just a pointer to the end of the OS, san signature
+_OsSize         EQU  0020104h ; Not actually a routine, just a pointer to the end of the OS, sans signature
 _bootOS         EQU  0020108h
 _interruptHandler EQU 002010Ch
 _rst10Handler   EQU  0020110h

@@ -46,8 +46,8 @@ DivHlByCLoop:
 	ret
 
 
-;------ DispUHL ----------------------------------------------------------------
-DispUHL:
+;------ DispUhl ----------------------------------------------------------------
+DispUhl:
 	call	GetHighByte
 	call	DispByte
 	call	GetHighByte
