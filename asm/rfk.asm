@@ -51,6 +51,22 @@ saveFlags:
 	
 	call	_RunIndicOff
 	
+	; Some entropy
+	ld	bc, 3
+	ld	iy, ((1024 * 256) + (320 * 240 * 2)) / 256
+	ld	hl, 0D00000h
+_:	xor	a
+_:	ld	de, (hl)
+	add	hl, bc
+	add	ix, de
+	dec	a
+	jr	nz, -_
+	dec	iy
+	ld	a, iyl
+	or	iyh
+	jr	nz, --_
+	ld	iy, flags
+	
 	; Clear variables
 	ld	de, vars
 	or	a
@@ -60,6 +76,9 @@ saveFlags:
 	ld	(hl), 0
 	ld	bc, 255	; Just pick a number, I guess
 	ldir
+	
+	; Save value from above
+	ld	(randomVal), ix
 	
 	; Search for data file
 	ld	hl, rfkDataName
@@ -102,6 +121,7 @@ dataFileFound:
 	ld	hl, 0
 	ld	(lcdRow), hl
 	ld	(lcdCol), hl
+	
 	
 	ld	hl, titleText
 	call	PutS
