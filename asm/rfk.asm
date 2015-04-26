@@ -115,16 +115,20 @@ dataFileFound:
 	ld	a, (font)
 	ld	(fontHeight), a
 	call	SetTextMode
-	call	ClearScreen
+;	call	ClearScreen
 	ld	a, 255
 	ld	(textColors), a
 	ld	hl, 0
 	ld	(lcdRow), hl
 	ld	(lcdCol), hl
 	
-	
+
+TitleScreen:
+	call	ClearScreen
 	ld	hl, titleText
 	call	PutS
+	call	GetKey
+	jp	RobotFindsKitten
 	
 	
 	

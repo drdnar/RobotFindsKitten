@@ -107,6 +107,40 @@ _dba:	or	0F0h
 	ret
 
 
+;------ BranchOnA --------------------------------------------------------------
+BranchOnA:
+; Branches depending on the value of A.
+; Format:
+;	.db	numberOfItems
+;	.db	someValue
+;	.dl	branchTarget
+;	.db	anotherValue
+;	.dl	anotherBranchTarget
+;	&c.
+; Can be either called or jumped to.
+; Inputs:
+;  - A: Value to branch on
+;  - HL: Pointer to table mapping bytes to jump addresses
+; Outputs:
+;  - Branch based on A
+;  - Target gets branch value in A
+;  - Returns to caller if no matching value
+; Destroys:
+;  - All
+	ld	b, (hl)
+_:	cp	(hl)
+	inc	hl
+	jr	z, +_
+	inc	hl
+	inc	hl
+	inc	hl
+	djnz	-_
+	ret
+_:	ld	de, (hl)
+	ex	de, hl
+	jp	(hl)
+
+
 ;------ GetStrIndexed ----------------------------------------------------------
 GetStrIndexed:
 ; Given an index into a table of ZTSs, this finds the specified string
