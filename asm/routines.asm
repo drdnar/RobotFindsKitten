@@ -1,3 +1,143 @@
+MultHlByA:
+; Multiplies 16-bit HL by A.
+; Inputs:
+;  - HL, high byte will be discarded
+;  - A
+; Output:
+;  - HL: 24-bit product
+; Destroys:
+;  - DE
+;  - Flags
+	ld	e, l
+	ld	d, a
+	mlt	de
+	ld	l, a
+	mlt	hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, de
+	ret
+
+	
+;------ GetRtcTimeLinear -------------------------------------------------------
+GetRtcTimeLinear:
+; WARNING: THIS CODE WILL SOMETIMES (RARELY) READ THE TIME INCORRECTLY!
+; It does not freeze the time before reading it.
+; Not a problem for entropy-purposes, but it is a problem if you need the actual
+; time.
+;
+; This monstrous routine will return the time as a 32-bit number of seconds in
+; DE:HL.
+; At least, I think.
+; Inputs:
+;  - None
+; Output:
+;  - DE:HL
+; Destroys:
+;  - AF
+;  - BC
+;  - IX maybe?
+;  - ???
+	; Minutes into seconds
+	ld	de, (mpRtcMinutes)
+	ld	d, 60
+	mlt	de
+	; Hours into seconds
+	ld	hl, (mpRtcHours)
+	ld	h, 225
+	mlt	hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, de
+	; Add seconds
+	ld	de, (mpRtcSeconds)
+	add	hl, de
+	; Convert into DE:HL format
+	push	hl
+	ld	b, 8
+rtcHighBitLoop:
+	add	hl, hl
+	adc	a, a
+	djnz	rtcHighBitLoop
+	pop	hl
+	ld	e, a
+;	ld	d, 0	; shouldn't be needed, for D should be zero from the previous load
+	push	de
+	push	hl
+	; Days into seconds.
+	ld	hl, (mpRtcDays)
+	ld	bc, (60 * 60 * 24) / 2	; Half
+	call	MultBcByDe
+	push	bc
+	pop	hl
+	add.s	hl, hl
+	ex	de, hl
+	adc.s	hl, hl			; ... and double
+	ex	de, hl
+	; Add in time-of-day
+	pop	bc
+	add.s	hl, bc
+	ex	de, hl
+	pop	bc
+	adc.s	hl, bc
+	ex	de, hl
+	; Done
+	ret
+
+
+;------ Mult10 -----------------------------------------------------------------
+Mult10:
+; Multiplies HL by ten.
+; Input:
+;  - HL
+; Output:
+;  - HL
+; Destroys:
+;  - DE
+	add	hl, hl
+	push	hl
+	pop	de
+	add	hl, hl
+	add	hl, hl
+	add	hl, de
+	ret
+
+
+;------ MultBcByHl -------------------------------------------------------------
+MultBcByHl:
+; Multiplies BC (16-bit) by HL (16-bit).
+; From Xeda
+; Inputs:
+;  - HL (16-bits)
+;  - BC (16-bits)
+; Output:
+;  - DE:BC
+; Destroys:
+;  - HL
+;  - AF
+	ld	d, c	\	ld	e, l	\	mlt	de	\	push	de
+	ld	d, h	\	ld	e, b	\	mlt	de
+	ld	a, l	\	ld	l, c	\	ld	c, a
+	mlt	hl	
+	mlt	bc
+	add.s	hl, bc
+	jr	nc, $ + 3 \	inc	de
+	pop	bc
+	ld	a, b	\	add	a, l	\	ld	b, a
+	ld	a, e	\	adc	a, h	\	ld	e, a
+	ret	nc
+	inc	d
+	ret
+
+
 ;------ DivDByE ----------------------------------------------------------------
 DivDByE:
 ; Divides D by E
@@ -48,16 +188,24 @@ DivHlByCLoop:
 
 ;------ DispUhl ----------------------------------------------------------------
 DispUhl:
-	call	GetHighByte
+	call	RotateHighByte
 	call	DispByte
-	call	GetHighByte
+	call	RotateHighByte
 	call	DispByte
-	call	GetHighByte
+	call	RotateHighByte
 	jr	DispByte
 	
 
 ;------ GetHighByte ------------------------------------------------------------
 GetHighByte:
+	push	hl
+	call	RotateHighByte
+	pop	hl
+	ret
+
+
+;------ RotateHighByte ---------------------------------------------------------
+RotateHighByte:
 	add	hl, hl
 	adc	a, a
 	add	hl, hl

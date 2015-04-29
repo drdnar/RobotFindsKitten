@@ -74,7 +74,7 @@ HuffmanGetNextBit:
 ;  - Nothing
 	push	hl
 	push	de
-	push	bc
+;	push	bc
 	ld	a, (currentBit)
 	dec	a
 	jr	nz, +_
@@ -89,7 +89,7 @@ _:	ld	(currentBit), a
 	rrca
 	ld	(currentByte), a
 	sbc	a, a
-	pop	bc
+;	pop	bc
 	pop	de
 	pop	hl
 	ret

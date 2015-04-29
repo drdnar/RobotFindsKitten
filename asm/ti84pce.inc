@@ -74,6 +74,11 @@ mpLcdCrsrClip           EQU 0E30C14h
 ; RTC
 pRtcRange               EQU 8000h
 mpRtcRange              EQU 0F30000h
+mpRtcSeconds		EQU (mpRtcRange + 0)
+mpRtcMinutes		EQU (mpRtcRange + 4)
+mpRtcHours		EQU (mpRtcRange + 8)
+mpRtcDays		EQU (mpRtcRange + 12)
+
 pKbdRange               EQU 0A000h
 mpKbdRange              EQU 0F50000h
 pBlLevel                EQU 0B024h
