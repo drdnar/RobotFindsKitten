@@ -78,7 +78,9 @@ _:	ld	de, (hl)
 	ldir
 	
 	; Save value from above
-	ld	(randomVal), ix
+	ld	(seed1), ix
+	call	GetRtcTimeLinear
+	ld	(seed2), hl
 	
 	; Search for data file
 	ld	hl, rfkDataName
@@ -201,6 +203,7 @@ _:	ld	a, (de)
 
 
 #include "dehuffman.asm"
+#include "random.asm"
 #include "text.asm"
 #include "routines.asm"
 #include "data.asm"

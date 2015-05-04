@@ -1,3 +1,17 @@
+;------ ------------------------------------------------------------------------
+ClearMem:
+; Clears a section of memory SLOW! :p
+; Input:
+;  - HL: Location to kill
+;  - B: Number of bytes to kill
+;  - A: What to clear it with
+	ld	(hl), a
+	inc	hl
+	djnz	ClearMem
+	ret
+
+
+;------ MultHlByA --------------------------------------------------------------
 MultHlByA:
 ; Multiplies 16-bit HL by A.
 ; Inputs:

@@ -1,4 +1,4 @@
-#define	RAND_SMC
+;#define	RAND_SMC
 #define	RAND_INC
 #define	RAND_RANGE8
 ;#define	RAND_RANGE16
@@ -108,7 +108,7 @@ RandRange8:
 ; 85cc~87
 ; 10 bytes
 	push	bc
-	call	rand
+	call	Rand16
 	pop	bc
 	ld	l, b
 	mlt	hl
@@ -125,9 +125,9 @@ RandRange16:
 ;  - HL is an int less than BC
 ; 142cc~146cc
 	push	bc
-	call	rand
+	call	Rand16
 	pop	bc
-	call	mul16
+	call	Mul16
 	ex	de, hl
 	ret
 Mul16:
