@@ -17,6 +17,9 @@
 #define EQU .equ
 #define end .end
 #define END .end
+#define L_BYTE(x) (x)
+#define H_BYTE(x) ((x >> 8) & 255)
+#define U_BYTE(x) ((x >> 16) & 255)
 
 lcdWidth        EQU      320
 lcdHeight       EQU      240
@@ -71,6 +74,81 @@ pLcdCrsrXy              EQU 4C10h
 mpLcdCrsrXy             EQU 0E30C10h
 pLcdCrsrClip            EQU 4C14h
 mpLcdCrsrClip           EQU 0E30C14h
+; Timers
+pTimersRange            EQU 7000h
+mpTimersRange           EQU 0F20000h
+pTimer1Count            EQU (pTimersRange + 00h)
+mpTimer1Count           EQU (mpTimersRange + 00h)
+pTimer2Count            EQU (pTimersRange + 10h)
+mpTimer2Count           EQU (mpTimersRange + 10h)
+pTimer3Count            EQU (pTimersRange + 20h)
+mpTimer3Count           EQU (mpTimersRange + 20h)
+pTimer1ResetValue       EQU (pTimersRange + 04h)
+mpTimer1ResetValue      EQU (mpTimersRange + 04h)
+pTimer2ResetValue       EQU (pTimersRange + 14h)
+mpTimer2ResetValue      EQU (mpTimersRange + 14h)
+pTimer3ResetValue       EQU (pTimersRange + 24h)
+mpTimer3ResetValue      EQU (mpTimersRange + 24h)
+pTimer1AlarmValue1      EQU (pTimersRange + 08h)
+mpTimer1AlarmValue1     EQU (mpTimersRange + 08h)
+pTimer1AlarmValue2      EQU (pTimersRange + 0Ch)
+mpTimer1AlarmValue2     EQU (mpTimersRange + 0Ch)
+pTimer2AlarmValue1      EQU (pTimersRange + 18h)
+mpTimer2AlarmValue1     EQU (mpTimersRange + 18h)
+pTimer2AlarmValue2      EQU (pTimersRange + 1Ch)
+mpTimer2AlarmValue2     EQU (mpTimersRange + 1Ch)
+pTimer3AlarmValue1      EQU (pTimersRange + 28h)
+mpTimer3AlarmValue1     EQU (mpTimersRange + 28h)
+pTimer3AlarmValue2      EQU (pTimersRange + 2Ch)
+mpTimer3AlarmValue2     EQU (mpTimersRange + 2Ch)
+pTimersControlRegister  EQU (pTimersRange + 30h)
+mpTimersControlRegister EQU (mpTimersRange + 30h)
+bTimer1Enable           EQU 0
+mTimer1Enable           EQU (1 << bTimer1Enable)
+bTimer2Enable           EQU 3
+mTimer2Enable           EQU (1 << bTimer2Enable)
+bTimer3Enable           EQU 6
+mTimer3Enable           EQU (1 << bTimer3Enable)
+bTimer1SrcCrystal       EQU 1
+mTimer1SrcCrystal       EQU (1 << bTimer1SrcCrystal)
+bTimer2SrcCrystal       EQU 4
+mTimer2SrcCrystal       EQU (1 << bTimer2SrcCrystal)
+bTimer3SrcCrystal       EQU 7
+mTimer3SrcCrystal       EQU (1 << bTimer3SrcCrystal)
+bTimer1InterruptEnable  EQU 2
+mTimer1InterruptEnable  EQU (1 << bTimer1InterruptEnable)
+bTimer2InterruptEnable  EQU 5
+mTimer2InterruptEnable  EQU (1 << bTimer2InterruptEnable)
+bTimer3InterruptEnable  EQU 8
+mTimer3InterruptEnable  EQU (1 << bTimer3InterruptEnable)
+bTimer1CountUp          EQU 9
+mTimer1CountUp          EQU (1 << bTimer1CountUp)
+bTimer2CountUp          EQU 10
+mTimer2CountUp          EQU (1 << bTimer1CountUp)
+bTimer3CountUp          EQU 11
+mTimer3CountUp          EQU (1 << bTimer1CountUp)
+pTimersInterruptStatus  EQU (pTimersRange + 34h)
+mpTimersInterruptStatus EQU (mpTimersRange + 34h)
+bTimer1Alarm1           EQU 0
+mTimer1Alarm1           EQU (1 << bTimer1Alarm1)
+bTimer1Alarm2           EQU 1
+mTimer1Alarm2           EQU (1 << bTimer1Alarm2)
+bTimer1Overflow         EQU 2
+mTimer1Overflow         EQU (1 << bTimer1Overflow)
+bTimer2Alarm1           EQU 3
+mTimer2Alarm1           EQU (1 << bTimer2Alarm1)
+bTimer2Alarm2           EQU 4
+mTimer2Alarm2           EQU (1 << bTimer2Alarm2)
+bTimer2Overflow         EQU 5
+mTimer2Overflow         EQU (1 << bTimer2Overflow)
+bTimer3Alarm1           EQU 6
+mTimer3Alarm1           EQU (1 << bTimer3Alarm1)
+bTimer3Alarm2           EQU 7
+mTimer3Alarm2           EQU (1 << bTimer3Alarm2)
+bTimer3Overflow         EQU 8
+mTimer3Overflow         EQU (1 << bTimer3Overflow)
+
+
 ; RTC
 pRtcRange               EQU 8000h
 mpRtcRange              EQU 0F30000h

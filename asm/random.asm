@@ -1,7 +1,7 @@
 ;#define	RAND_SMC
 #define	RAND_INC
 #define	RAND_RANGE8
-;#define	RAND_RANGE16
+#define	RAND_RANGE16
 ;#define	RAND_RANGE10
 ;#define	RAND_TIBCD
 
