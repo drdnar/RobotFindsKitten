@@ -82,6 +82,9 @@ _:	ld	de, (hl)
 	call	GetRtcTimeLinear
 	ld	(seed2), hl
 	
+	; Initialize short-mode routines
+	call	InitializeRandomRoutines
+	
 	; Search for data file
 	ld	hl, rfkDataName
 	call	_Mov9ToOP1
@@ -101,7 +104,7 @@ _:	ld	de, (hl)
 dataFileFound:
 	ld	(savedSp), sp
 	; Get pointer to Huffman decode tree
-	ld	hl, (itemCount)
+	ld	hl, (itemsCount)
 	add	hl, hl
 	ld	de, objTblOffset
 	add	hl, de
@@ -196,12 +199,12 @@ _:	ld	a, (de)
 	ld	e, (hl)
 	inc	hl
 	ld	d, (hl)
-	ld	(itemCount), de
+	ld	(itemsCount), de
 	; Return NZ
 	inc	a
 	ret
 
-
+#include "game.asm"
 #include "dehuffman.asm"
 #include "random.asm"
 #include "text.asm"

@@ -1,3 +1,12 @@
+
+InitializeRandomRoutines:
+	ld	hl, RandomRoutinesStart
+	ld	de, shortModeCode
+	ld	bc, RandomRoutinesEnd - RandomRoutinesStart
+	ldir
+	ret
+
+
 ;#define	RAND_SMC
 #define	RAND_INC
 #define	RAND_RANGE8
@@ -25,10 +34,42 @@
 ;   randTI          HL          (hl)             Z80    27      1540~1568
 ;   mlt16           HL,BC       DEBC             Z80    30      54~56
 
-.ASSUME	ADL=0
 
 #IFDEF	RAND_INC
 Rand16:
+	di
+	stmix
+	call.is	Rand16Short
+	rsmix
+	ei
+	ret
+#ENDIF
+
+#IFDEF	RAND_RANGE8
+RandRange8:
+	di
+	stmix
+	call.is	RandRange8Short
+	rsmix
+	ei
+	ret
+#ENDIF
+
+#IFDEF	RAND_RANGE16
+RandRange16:
+	di
+	stmix
+	call.is	RandRange16Short
+	rsmix
+	ei
+	ret
+#ENDIF
+
+RandomRoutinesStart:
+.ASSUME	ADL=0
+
+#IFDEF	RAND_INC
+Rand16Short:
 ; Inputs:
 ;  - (seed1) is a non-zero 16-bit int
 ;  - (seed2) is a 16-bit int
@@ -53,7 +94,7 @@ Rand16:
 ;  - Worst: 67
 ; 53 bytes
 #IFNDEF	RAND_SMC
-	ld	hl, (seed2)
+	ld	hl, (seed2Short)
 #ELSE
 seed2 = $ + 1
 	ld	hl, 0
@@ -79,10 +120,10 @@ nospecial:
 	jr	nc, $ + 5
 	inc	hl	\	inc	hl	\	inc	hl
 writeseed2:
-	ld	(seed2), hl
+	ld	(seed2Short), hl
 	ex	de, hl
 #IFNDEF	RAND_SMC
-	ld	hl, (seed1)
+	ld	hl, (seed1Short)
 #ELSE
 seed1 = $ + 1
 	ld	hl, 1
@@ -92,14 +133,14 @@ seed1 = $ + 1
 	and	%10110100
 	jp	po, $ + 4
 	inc	l
-	ld	(seed1), hl
+	ld	(seed1Short), hl
 	add	hl, de
-	ret
+	ret.l
 #ENDIF
 
 
 #IFDEF	RAND_RANGE8
-RandRange8:
+RandRange8Short:
 ; Input:
 ;  - B
 ; Output:
@@ -108,29 +149,29 @@ RandRange8:
 ; 85cc~87
 ; 10 bytes
 	push	bc
-	call	Rand16
+	call.is	Rand16Short
 	pop	bc
 	ld	l, b
 	mlt	hl
 	ld	a, h
-	ret
+	ret.l
 #ENDIF
 
 
 #IFDEF	RAND_RANGE16
-RandRange16:
+RandRange16Short:
 ; Input:
 ;  - BC is the exclusive upperbound
 ; Output:
 ;  - HL is an int less than BC
 ; 142cc~146cc
 	push	bc
-	call	Rand16
+	call.is	Rand16Short
 	pop	bc
-	call	Mul16
+	call.is	Mul16Short
 	ex	de, hl
-	ret
-Mul16:
+	ret.l
+Mul16Short:
 ; Expects Z80 mode
 ; Inputs:
 ;  - HL
@@ -151,12 +192,12 @@ Mul16:
 	ld	a, e	\	adc	a, h	\	ld	e, a
 	ret	nc
 	inc	d
-	ret
+	ret.l
 #ENDIF
 
 
 #IFDEF	RAND_TIBCD
-RandTI:
+RandTIShort:
 ; Inputs:
 ;  - HL points to where the float should be written (does not allocate RAM).
 ; Outputs:
@@ -171,26 +212,26 @@ RandTI:
 randTIloop:
 	push	bc
 	push	hl
-	call	RandRange10
+	call.is	RandRange10Short
 	pop	hl
 	rrd
 	push	hl
-	call	RandRange10
+	call.is	RandRange10Short
 	pop	hl
 	rrd
 	pop	bc
 	djnz	randTIloop
-	ret
+	ret.l
 #ENDIF
 
 
 #IFDEF	RAND_RANGE10
-RandRange10:
+RandRange10Short:
 ; Output:
 ;  - A is an int from 0 to 9.
 ; 88cc~90cc
 ; 16 bytes
-	call	Rand16
+	call.is	Rand16Short
 	xor	a
 	ld	b, h
 	ld	c, l
@@ -198,7 +239,8 @@ RandRange10:
 	add	hl, hl	\	rla
 	add	hl, bc	\	adc	a, 0
 	add	hl, hl	\	rla
-	ret
+	ret.l
 #ENDIF
 
 .ASSUME	ADL=1
+RandomRoutinesEnd:

@@ -1,3 +1,7 @@
+; TODO:
+;  - Write code to drive scrollTimer.
+
+
 firstNkiChar	.equ	33
 lastNkiChar	.equ	126
 RobotFindsKitten:
@@ -62,7 +66,7 @@ _:	inc	hl
 rglph:	; Random glyph
 	ld	b, lastNkiChar - firstNkiChar
 	call	RandRange8
-	add	a, firstChar
+	add	a, firstNkiChar
 	cp	'#'
 	jr	z, rglph
 	ld	(ix+4), a
@@ -78,7 +82,7 @@ _:	cp	(hl)
 	djnz	-_
 	ld	(ix+5), a
 	; Loop control
-	lea	ix, (ix + 6)
+	lea	ix, ix + 6
 	ld	a, (stringStage)
 	dec	a
 	ld	(stringStage), a
@@ -126,7 +130,7 @@ _:	ld	l, (ix)
 
 ;------ GameLoop ---------------------------------------------------------------
 	jp	Quit
-	GameLoop:
+GameLoop:
 	ld	hl, (cursorY)
 	call	Locate
 	ld	a, '#'
@@ -508,7 +512,7 @@ OneSecondWait:
 	or	H_BYTE(mTimer1CountUp)
 	ld	(hl), a
 	; Zero-out counter
-	ex	hl, de
+	ex	de, hl
 	sbc	hl, hl	; C zeroed from above
 	ld	(mpTimer1Count + 1), hl
 	ld	(mpTimer1Count), hl
@@ -517,12 +521,12 @@ OneSecondWait:
 	ld	(mpTimer1AlarmValue1), hl
 	ld	(mpTimer1AlarmValue2), hl
 	; Enable timer!
-	ex	hl, de
+	ex	de, hl
 	dec	hl
 	ld	a, (hl)
-	or	(mTimer1Enable | mTimer1SrcCrystal)
+	or	mTimer1Enable | mTimer1SrcCrystal
 	ld	(hl), a
-	ex	hl, de
+	ex	de, hl
 	ld	hl, mpTimer1Count + 1
 _:	bit	7, (hl)
 	jr	z, -_

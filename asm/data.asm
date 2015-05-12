@@ -40,3 +40,10 @@ titleText:
 ;	.db	chNewLine
 ;	.db	chNewLine	; This last chNewLine is an evil hack.
 	.db	0
+
+
+colorsBlacklist:
+	.db	end_colorsBlacklist - start_colorsBlacklist
+start_colorsBlacklist:
+	.db	00, 01, 02, 08, 20h, 21h, 28h, 40h, 41h, 60h
+end_colorsBlacklist:

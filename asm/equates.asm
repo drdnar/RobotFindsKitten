@@ -14,7 +14,9 @@ objTblOffset	.equ	12	; Comes from structure of file
 
 someFlags	.equ	-128
 
-vars		.equ	pixelShadow2
+shortModeCode	.equ	pixelShadow2
+
+vars		.equ	pixelShadow2 + 1024
 
 savedSp		.equ	vars
 ; Text
@@ -39,10 +41,13 @@ objectArray	.equ	itemCache + itemCacheSize
 cursorY		.equ	objectArray + 1024
 cursorX		.equ	cursorY + 1
 randomVal	.equ	cursorX + 1
+randomValShort	.equ	(randomVal & 0FFFFh)
 seed1		.equ	randomVal
+seed1Short	.equ	(seed1 & 0FFFFh)
 seed2		.equ	randomVal + 2
+seed2Short	.equ	(seed2 & 0FFFFh)
 rotationTimer	.equ	seed2 + 2
-itemCount	.equ	rotationTimer + 1
+itemsCount	.equ	rotationTimer + 1
 objectCount	.equ	itemCount + 3
 foundObject	.equ	objectCount + 1
 stringOffset	.equ	foundObject + 1

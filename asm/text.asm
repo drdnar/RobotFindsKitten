@@ -50,6 +50,7 @@ FixLcdMode:
 
 
 ;------ ClearScreen ------------------------------------------------------------
+ClrScrnFull:
 ClearScreen:
 	ld	de, (mpLcdBase)
 	or	a
@@ -93,6 +94,47 @@ NewLine:
 	ret
 
 
+;------ ClearEOL ---------------------------------------------------------------
+; Erases everything from the cursor to the right edge of the screen.
+; Inputs:
+;  - LCD cursor
+;  - Text background color
+; Output:
+;  - Erasing
+; Destroys:
+;  - AF
+;  - BC
+;  - DE
+;  - HL
+;  - IX
+ClearEOL:
+	ld	de, (lcdCol)
+	ld	ix, 320
+	or	a
+	sbc	ix, de
+	ld	a, (textBackColor)
+	ld	iyl, 14
+	call	GetCursorPtr
+clearEolLoop:
+	push	hl
+	ld	(hl), a
+	ex	de, hl
+	or	a
+	sbc	hl, hl
+	add	hl, de
+	inc	de
+	push	ix
+	pop	bc
+	ldir
+	pop	hl
+	ld	de, 320
+	add	hl, de
+	dec	iyl
+	jr	nz, clearEolLoop
+	ld	iy, flags
+	ret
+
+
 ;------ PutS -------------------------------------------------------------------
 PutS:
 ; Displays a string.  If the string contains control codes, those codes are
@@ -117,6 +159,28 @@ putSNewLine:
 	call	NewLine
 	pop	hl
 	jr	PutS
+
+
+;------ GetCursorPtr -----------------------------------------------------------
+GetCursorPtr:
+; Computes the address the LCD cursor is referencing.
+; Inputs:
+;  - (lcdRow), (lcdCol)
+; Outputs:
+;  - HL: Pointer
+; Destroys:
+;  - Nothing
+	push	de
+	ld	hl, (lcdRow)
+	ld	h, 160
+	mlt	hl
+	add	hl, hl
+	ld	de, (lcdCol)
+	add	hl, de
+	ld	de, (mpLcdBase)
+	add	hl, de
+	pop	de
+	ret
 
 
 ;------ PutC -------------------------------------------------------------------
@@ -318,4 +382,32 @@ PutCNoFinalBits:
 	pop	bc
 	pop	af
 ; End of function
+	ret
+
+
+;------ Locate: ----------------------------------------------------------------
+Locate:
+; Moves the cursor to a grid location.
+; Named after a QuickBASIC command.
+; Inputs:
+;  - H: Column
+;  - L: Row
+; Output:
+;  - Cursor moved
+; Destroys:
+;  - Nothing
+	push	af
+	push	de
+	push	hl
+	ld	d, h
+	ld	e, 10
+	mlt	de
+	ld	(lcdCol), de
+	ld	h, 14
+	mlt	hl
+	ld	a, l
+	ld	(lcdRow), a
+	pop	hl
+	pop	de
+	pop	af
 	ret
