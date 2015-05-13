@@ -5,6 +5,7 @@ chTab		.equ	02h
 chBackspace	.equ	03h
 chDel		.equ	03h
 ch1stPrintableChar	.equ	4
+chThickSpace	.equ	7Fh
 
 objTblOffset	.equ	12	; Comes from structure of file
 

@@ -2,8 +2,13 @@
 ;  - Write code to drive scrollTimer.
 
 
+shortWait	.equ	100;500
+longWait	.equ	2000;6000
+mediumWait	.equ	1000;3000
+
 firstNkiChar	.equ	33
 lastNkiChar	.equ	126
+
 RobotFindsKitten:
 ;------ StartGame --------------------------------------------------------------
 StartGame:
@@ -223,7 +228,7 @@ stringPause2:
 getKeyLoopKeyGet:
 	ei
 	halt
-	call	GetCSC
+	call	_GetCSC
 	or	a
 	jp	z, getKeyLoop
 
@@ -413,9 +418,9 @@ meetingLine	.equ	5
 	call	PutSCentered
 	call	OneSecondWait
 
-	call	GetCSC
-	xor	a
-	ld	(keyBuffer), a
+;	call	GetCSC
+;	xor	a
+;	ld	(keyBuffer), a
 	
 	ld	hl, 0FFh
 	ld	(textColors), hl
@@ -430,9 +435,9 @@ meetingLine	.equ	5
 	
 	call	GetKey
 	cp	skEnter
-	jp	z, Restart
+	jp	z, TitleScreen
 	cp	sk1
-	jp	z, Restart
+	jp	z, TitleScreen
 	jp	Quit
 
 

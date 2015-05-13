@@ -89,7 +89,7 @@ rtcHighBitLoop:
 	; Days into seconds.
 	ld	hl, (mpRtcDays)
 	ld	bc, (60 * 60 * 24) / 2	; Half
-	call	MultBcByDe
+	call	MultBcByHl
 	push	bc
 	pop	hl
 	add.s	hl, hl

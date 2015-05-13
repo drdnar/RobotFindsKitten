@@ -109,9 +109,11 @@ NewLine:
 ;  - IX
 ClearEOL:
 	ld	de, (lcdCol)
-	ld	ix, 320
+	ld	hl, 320
 	or	a
-	sbc	ix, de
+	sbc	hl, de
+	push	hl
+	pop	ix
 	ld	a, (textBackColor)
 	ld	iyl, 14
 	call	GetCursorPtr
@@ -385,7 +387,90 @@ PutCNoFinalBits:
 	ret
 
 
-;------ Locate: ----------------------------------------------------------------
+;------ PutSCentered -----------------------------------------------------------
+PutSCentered:
+; Displays a string, centering it.  However, if the string contains control
+; codes, the result will be weird.
+; Input:
+;  - HL: String to show
+;  - B: Line on which to show the string.
+; Output:
+;  - String shown
+;  - HL advanced to the byte after the null terminator.
+; Destroys:
+;  - AF
+;  - BC
+;  - DE
+;  - HL
+
+	push	hl
+	ex	de, hl
+	ld	l, b
+	ld	h, 0
+	call	Locate
+	call	GetStrWidth
+	or	a
+	ld	a, h
+	rra
+	ld	d, a
+	ld	a, l
+	rra
+	ld	e, a
+	ld	hl, 320 / 2
+	or	a
+	sbc	hl, de
+	ld	(lcdCol), hl
+	pop	hl
+	call	PutS
+	ret
+
+
+;------ GetGlyphWidth ----------------------------------------------------------
+GetGlyphWidth:
+; GetGlyphWidth
+; Returns the width of the given glyph
+; Input:
+;  - A: Codepoint
+; Output:
+;  - A: Width
+; Destroys:
+;  - Nothing
+	push	hl
+	push	de
+	or	a
+	sbc	hl, hl
+	ld	de, (fontWidthsPtr)
+	add	hl, de
+	ld	a, (hl)
+	pop	de
+	pop	hl
+	ret
+
+
+;------ GetStrWidth ------------------------------------------------------------
+GetStrWidth:
+; Computes the width, in pixels, of a string
+; Input:
+;  - DE: Pointer to string
+; Output:
+;  - HL: Width of string, in pixels
+; Destroys:
+;  - AF
+	or	a
+	sbc	hl, hl
+	push	hl
+	pop	bc
+gswl:	ld	a, (de)
+	inc	de
+	or	a
+	ret	z
+	call	GetGlyphWidth
+	ld	c, a
+	add	hl, bc
+	jr	gswl
+
+
+;------ Locate -----------------------------------------------------------------
 Locate:
 ; Moves the cursor to a grid location.
 ; Named after a QuickBASIC command.
