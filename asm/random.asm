@@ -2,7 +2,7 @@
 InitializeRandomRoutines:
 	ld	hl, RandomRoutinesStart
 	ld	de, shortModeCode
-	ld	bc, RandomRoutinesEnd - RandomRoutinesStart
+	ld	bc, RandomRoutinesEndShort - RandomRoutinesStartShort
 	ldir
 	ret
 
@@ -65,8 +65,12 @@ RandRange16:
 	ret
 #ENDIF
 
+
 RandomRoutinesStart:
 .ASSUME	ADL=0
+.org	shortModeCode & 0FFFFh
+
+RandomRoutinesStartShort:
 
 #IFDEF	RAND_INC
 Rand16Short:
@@ -190,7 +194,7 @@ Mul16Short:
 	pop	bc
 	ld	a, b	\	add	a, l	\	ld	b, a
 	ld	a, e	\	adc	a, h	\	ld	e, a
-	ret	nc
+	ret.l	nc
 	inc	d
 	ret.l
 #ENDIF
@@ -242,5 +246,8 @@ RandRange10Short:
 	ret.l
 #ENDIF
 
+
+RandomRoutinesEndShort:
 .ASSUME	ADL=1
+.org	RandomRoutinesStart + (RandomRoutinesEndShort - RandomRoutinesStartShort)
 RandomRoutinesEnd:

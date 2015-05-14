@@ -132,7 +132,6 @@ TitleScreen:
 	call	ClearScreen
 	ld	hl, titleText
 	call	PutS
-	call	GetKey
 	jp	RobotFindsKitten
 	
 	

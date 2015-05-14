@@ -114,7 +114,8 @@ ClearEOL:
 	sbc	hl, de
 	push	hl
 	pop	ix
-	ld	a, (textBackColor)
+	;ld	a, (textBackColor)
+	xor	a
 	ld	iyl, 14
 	call	GetCursorPtr
 clearEolLoop:

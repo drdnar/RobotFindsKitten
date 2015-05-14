@@ -39,7 +39,7 @@ itemCache	.equ	huffmanTable + 3
 itemCacheSize	.equ	1024
 ; Game
 objectArray	.equ	itemCache + itemCacheSize
-cursorY		.equ	objectArray + 1024
+cursorY		.equ	objectArray + 256
 cursorX		.equ	cursorY + 1
 randomVal	.equ	cursorX + 1
 randomValShort	.equ	(randomVal & 0FFFFh)
@@ -49,7 +49,7 @@ seed2		.equ	randomVal + 2
 seed2Short	.equ	(seed2 & 0FFFFh)
 rotationTimer	.equ	seed2 + 2
 itemsCount	.equ	rotationTimer + 1
-objectCount	.equ	itemCount + 3
+objectCount	.equ	itemsCount + 3
 foundObject	.equ	objectCount + 1
 stringOffset	.equ	foundObject + 1
 stringStage	.equ	stringOffset + 2

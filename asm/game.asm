@@ -1,5 +1,8 @@
 ; TODO:
 ;  - Write code to drive scrollTimer.
+;  - PutS needs to check for glyphs extending past edge-of-screen
+;  - Fix ending sequence
+;  - Add in calls to fix home screen upon termination
 
 
 shortWait	.equ	100;500
@@ -12,6 +15,7 @@ lastNkiChar	.equ	126
 RobotFindsKitten:
 ;------ StartGame --------------------------------------------------------------
 StartGame:
+
 	; Reset some vars
 	ld	hl, 0
 	ld	(foundObject), hl
@@ -134,7 +138,6 @@ _:	ld	l, (ix)
 	
 
 ;------ GameLoop ---------------------------------------------------------------
-	jp	Quit
 GameLoop:
 	ld	hl, (cursorY)
 	call	Locate
@@ -304,10 +307,12 @@ glSetNki:
 	ld	(stringStage), a
 	inc	a
 	ld	(foundObject), a
-	ld	a, (hl)
+	ld	de, 0
+	ld	e, (hl)
 	inc	hl
-	ld	h, (hl)
-	ld	l, a
+	ld	d, (hl)
+	ex	de, hl
+	ld	a, l
 	cp	255
 	jr	nz, +_
 	ld	a, h
