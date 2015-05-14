@@ -54,7 +54,7 @@ foundObject	.equ	objectCount + 1
 stringOffset	.equ	foundObject + 1
 stringStage	.equ	stringOffset + 2
 scrollTimer	.equ	stringStage + 1
-lastItemPtr	.equ	scrollTimer + 2
+lastItemPtr	.equ	scrollTimer + 3
 fpItems		.equ	lastItemPtr + 2
 OP7		.equ	fpItems + 9
 end_of_game_vars	.equ	OP7 + 9

@@ -146,12 +146,6 @@ Panic:
 	call	FixLcdMode
 	ret
 
-GetKey:
-	call	_GetCSC
-	or	a
-	ret	nz
-	jr	GetKey
-
 
 ;------ VerifyDataFile ---------------------------------------------------------
 VerifyDataFile:

@@ -55,6 +55,8 @@ ClearScreen:
 	ld	de, (mpLcdBase)
 	or	a
 	sbc	hl, hl
+	ld	(lcdRow), hl
+	ld	(lcdCol), hl
 	add	hl, de
 	inc	de
 	ld	(hl), 0
@@ -109,7 +111,7 @@ NewLine:
 ;  - IX
 ClearEOL:
 	ld	de, (lcdCol)
-	ld	hl, 320
+	ld	hl, 320 - 1
 	or	a
 	sbc	hl, de
 	push	hl
@@ -150,16 +152,43 @@ PutS:
 ; Destroys:
 ;  - AF
 	ld	a, (hl)
-	or	a
 	inc	hl
+	or	a
+	scf
 	ret	z
 	cp	chNewLine
 	jr	z, putSNewLine
+	
+	push	hl
+	push	de
+	call	GetGlyphWidth
+	sbc	hl, hl	; C is reset from GetGlyphWidth
+	ld	l, a
+	ld	de, (lcdCol)
+	add	hl, de	; C is reset
+	ld	de, 320 - 5
+	sbc	hl, de
+	pop	de
+	pop	hl
+	ret	nc
+	
+	dec	hl
+	ld	a, (hl)
+	inc	hl
 	call	PutC
 	jr	PutS
 putSNewLine:
 	push	hl
-	call	NewLine
+	call	ClearEOL
+	ld	a, (lcdRow)
+	add	a, 14
+	cp	240 - 14
+	jr	c, +_
+	xor	a
+_:	ld	(lcdRow), a
+	or	a
+	sbc	hl, hl
+	ld	(lcdCol), hl
 	pop	hl
 	jr	PutS
 
@@ -434,12 +463,14 @@ GetGlyphWidth:
 ;  - A: Codepoint
 ; Output:
 ;  - A: Width
+;  - Carry is reset
 ; Destroys:
 ;  - Nothing
 	push	hl
 	push	de
 	or	a
 	sbc	hl, hl
+	ld	l, a
 	ld	de, (fontWidthsPtr)
 	add	hl, de
 	ld	a, (hl)

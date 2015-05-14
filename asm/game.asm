@@ -1,13 +1,13 @@
 ; TODO:
 ;  - Write code to drive scrollTimer.
-;  - PutS needs to check for glyphs extending past edge-of-screen
 ;  - Fix ending sequence
 ;  - Add in calls to fix home screen upon termination
+;  - Cursor on right edge of screen isn't being erased
 
 
-shortWait	.equ	100;500
-longWait	.equ	2000;6000
-mediumWait	.equ	1000;3000
+shortWait	.equ	100	; 0.1 s	;500
+longWait	.equ	2000	; 2 s	;6000
+mediumWait	.equ	1000	; 1 s	;3000
 
 firstNkiChar	.equ	33
 lastNkiChar	.equ	126
@@ -15,7 +15,6 @@ lastNkiChar	.equ	126
 RobotFindsKitten:
 ;------ StartGame --------------------------------------------------------------
 StartGame:
-
 	; Reset some vars
 	ld	hl, 0
 	ld	(foundObject), hl
@@ -136,6 +135,9 @@ _:	ld	l, (ix)
 	ld	a, 255
 	ld	(textForeColor), a
 	
+; Get the timer going
+	call	StartGeneralPurposeTimer
+
 
 ;------ GameLoop ---------------------------------------------------------------
 GameLoop:
@@ -148,9 +150,14 @@ getKeyLoop:
 	ld	a, (foundObject)
 	or	a
 	jp	z, getKeyLoopKeyGet
+;	ld	hl, (scrollTimer)
+;	dec	hl
+;	ld	(scrollTimer), hl
+	call	CheckTimer
+	ld	hl, 0
+	call	Locate
 	ld	hl, (scrollTimer)
-	dec	hl
-	ld	(scrollTimer), hl
+	call	DispHL
 	ld	a, (stringStage)
 	cp	1
 	jp	z, stringPause1
@@ -187,7 +194,7 @@ stringRestart:
 	jp	getKeyLoopKeyGet
 stringScroll:
 	ld	hl, (scrollTimer)
-	ld	de, 0FFFFh
+	ld	de, 0FFFFFFh
 	add	hl, de	; flags
 	jr	c, getKeyLoopKeyGet
 	ld	hl, 16
@@ -219,7 +226,7 @@ stringScrollDispStringDoneScroll:
 stringPause1:
 stringPause2:
 	ld	hl, (scrollTimer)
-	ld	de, 0FFFFh
+	ld	de, 0FFFFFFh
 	add	hl, de
 	jr	c, getKeyLoopKeyGet
 	ld	hl, shortWait
@@ -230,7 +237,7 @@ stringPause2:
 	
 getKeyLoopKeyGet:
 	ei
-	halt
+;	halt
 	call	_GetCSC
 	or	a
 	jp	z, getKeyLoop
@@ -502,46 +509,4 @@ RandomLocation:
 	ld	e, a
 	call	TestCollision
 	jr	c, RandomLocation
-	ret
-
-
-;------ OneSecondWait ----------------------------------------------------------
-OneSecondWait:
-; Does what it says.
-; Destroys:
-;  - HL
-;  - DE
-;  - AF
-	; Halt timer & configure it
-	ld	hl, mpTimersControlRegister
-	ld	a, (hl)
-	and	~(mTimer1Enable | mTimer1InterruptEnable)
-	ld	(hl), a
-	inc	hl
-	ld	a, (hl)
-	or	H_BYTE(mTimer1CountUp)
-	ld	(hl), a
-	; Zero-out counter
-	ex	de, hl
-	sbc	hl, hl	; C zeroed from above
-	ld	(mpTimer1Count + 1), hl
-	ld	(mpTimer1Count), hl
-	; Set alarm registers to non-triggering value
-	dec	hl
-	ld	(mpTimer1AlarmValue1), hl
-	ld	(mpTimer1AlarmValue2), hl
-	; Enable timer!
-	ex	de, hl
-	dec	hl
-	ld	a, (hl)
-	or	mTimer1Enable | mTimer1SrcCrystal
-	ld	(hl), a
-	ex	de, hl
-	ld	hl, mpTimer1Count + 1
-_:	bit	7, (hl)
-	jr	z, -_
-	ex	de, hl
-	ld	a, (hl)
-	and	~mTimer1Enable
-	ld	(hl), a
 	ret
