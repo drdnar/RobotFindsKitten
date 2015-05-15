@@ -81,28 +81,13 @@ SetGeneralPurposeTimer:
 
 ;------ CheckTimer -------------------------------------------------------------
 CheckTimer:
-	ld	hl, 1
-	call	Locate
-	ld	hl, (mpTimer1Count)
-	call	DispHL
-;	ld	a, ','
-;	call	PutC
-;	ld	hl, (mpTimersControlRegister)
-;	call	DispHL
-	
-	
 	or	a
 	ld	hl, (mpTimer1Count)
 	ld	de, (mpTimer1Count)
 	sbc	hl, de
 	jr	z, +_
 	ld	de, (mpTimer1Count)
-_:	
-	ld	a, e
-	cp	20h
-	ret	c
-	
-	or	a
+_:	or	a
 	sbc	hl, hl
 	add	hl, de
 	ld	a, l

@@ -52,7 +52,7 @@ itemsCount	.equ	rotationTimer + 1
 objectCount	.equ	itemsCount + 3
 foundObject	.equ	objectCount + 1
 stringOffset	.equ	foundObject + 1
-stringStage	.equ	stringOffset + 2
+stringStage	.equ	stringOffset + 3
 scrollTimer	.equ	stringStage + 1
 lastItemPtr	.equ	scrollTimer + 3
 fpItems		.equ	lastItemPtr + 2
