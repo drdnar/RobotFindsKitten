@@ -1,6 +1,6 @@
 ; TODO:
+;  - Switch cursor timer to actual timer (oops)
 ;  - Fix ending sequence
-;  - Add in calls to fix home screen upon termination
 ;  - Cursor on right edge of screen isn't being erased
 
 

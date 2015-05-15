@@ -144,6 +144,9 @@ Panic:
 	ld	iy, flags
 	ld	sp, (savedSp)
 	call	FixLcdMode
+	call	_DrawStatusBar
+	call	_DrawStatusBarInfo
+	call	_ClrScrnFull
 	ret
 
 

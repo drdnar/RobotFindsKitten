@@ -365,6 +365,15 @@ _Arc_Unarc      EQU  0021448h
 _DispHL24       EQU  0021EE0h
 _nmiHandler     EQU  00220A8h
 
+_DrawStatusBar  EQU  021A3Ch 
+_DrawStatusBarInfo EQU  021AB4h
+_DrawBatteryIndicator EQU  021A50h
+_ClrLCDFull	equ	020808h
+_ClrLCD	equ	02080ch
+_ClrScrnFull	equ	020810h
+_ClrScrn	equ	020814h
+_ClrTxtShd	equ	020818h
+_ClrWindow	equ	02081ch
 
 ;====== RAM Locations/Address Space ============================================
 
