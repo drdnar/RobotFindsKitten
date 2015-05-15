@@ -22,7 +22,7 @@ dataNotFoundMsg:
 
 titleText:
 	.db	"Originally by the illustrious Leonard Richardson", chNewLine
-	.db	"Cloned by Dr. D\'nar, April 2015", chNewLine
+	.db	"Cloned by Dr. D\'nar, 15 May 2015", chNewLine
 	.db	"Written especially for the TI-84 Plus CE", chNewLine
 	.db	chNewLine
 	.db	"In this game, you are robot (#). Your job is to find", chNewLine

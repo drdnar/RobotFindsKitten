@@ -1,12 +1,6 @@
-; TODO:
-;  - Switch cursor timer to actual timer (oops)
-;  - Fix ending sequence
-;  - Cursor on right edge of screen isn't being erased
-
-
-shortWait	.equ	50	; 0.05 s	;500
-longWait	.equ	1500	; 1.5 s		;6000
-mediumWait	.equ	750	; 0.75 s	;3000
+shortWait	.equ	128	; 0.125 s	;500
+longWait	.equ	2048	; 2 s		;6000
+mediumWait	.equ	1024	; 1 s	;3000
 
 firstNkiChar	.equ	33
 lastNkiChar	.equ	126
@@ -146,24 +140,10 @@ GameLoop:
 	call	PutC
 	
 getKeyLoop:
-;	ld	hl, 0
-;	call	Locate
-;	ld	a, (foundObject)
-;	call	DispByte
-;	ld	a, ','
-;	call	PutC
-
+	call	CheckTimer
 	ld	a, (foundObject)
 	or	a
 	jp	z, getKeyLoopKeyGet
-	ld	hl, (scrollTimer)
-	dec	hl
-	ld	(scrollTimer), hl
-;	call	CheckTimer
-
-;	ld	hl, (scrollTimer)
-;	call	DispHL
-
 	ld	a, (stringStage)
 	cp	1
 	jp	z, stringPause1
@@ -243,7 +223,7 @@ stringPause2:
 	
 getKeyLoopKeyGet:
 	ei
-;	halt
+	halt
 	call	_GetCSC
 	or	a
 	jp	z, getKeyLoop

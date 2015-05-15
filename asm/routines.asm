@@ -89,13 +89,11 @@ CheckTimer:
 	ld	de, (mpTimer1Count)
 _:	or	a
 	sbc	hl, hl
-	add	hl, de
-	ld	a, l
+	ld	a, e
 	and	1Fh
 	ld	l, a
-	ld	h, 0
 	call	SetGeneralPurposeTimer
-	ld	b, 5
+	ld	b, 5	
 _:	srl	d
 	rr	e
 	djnz	-_

@@ -4,50 +4,6 @@
 
 	.org	userMem - 2
 	.db	tExtTok, tAsm84CeCmp
-
-#ifdef	NEVER	
-	ld	hl, blarg
-	call	_PutS
-	call	_NewLine
-	ret
-blarg:
-	.db	"Blargh. ", 0
-	
-	call	GetKey
-	cp	sk1
-	jr	z, saveFlags
-	
-	ld	de, pixelShadow2
-	ld	hl, 0D00000h
-	ld	b, 255
-_:	ld	a, (de)
-	inc	de
-	xor	(hl)
-	inc	hl
-	jr	z, +_
-	push	hl
-	push	de
-	push	bc
-	push	af
-	ld	a, l
-	call	DispByte
-	pop	af
-	call	DispByte
-	ld	a, ','
-	call	_PutC
-	pop	bc
-	pop	de
-	pop	hl
-_:	djnz	--_
-	ret
-	
-saveFlags:
-	ld	de, pixelShadow2
-	ld	hl, 0D00000h
-	ld	bc, 256
-	ldir
-	ret
-#endif	
 	
 	call	_RunIndicOff
 	
@@ -137,7 +93,6 @@ TitleScreen:
 	
 	
 Quit:
-	call	GetKey
 	
 Panic:
 	

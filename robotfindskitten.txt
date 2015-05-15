@@ -1,0 +1,194 @@
++-----------------------------------------------------+ 
+| robotfindskitten TI-84 Plus CE         15 May 2015  | 
+| It's a readme, folded into the shape of a crane.    | 
+|                                                     | 
++-----------------------------------------------------+ 
+|                                                     | 
+|  An Introduction                                    | 
+|                                                     |
+|  You all know the score. You're working on a hard   |   
+|  problem for math class. You're using y=, 2nd+      |
+|  calc+whatever, fnInt( . And you desperately need   |
+|  to know one thing: where are the Zen simulations   |
+|  on your calculator?                                |
+|                                                     |
+|  Look no further. robotfindskitten is in fact a Zen |
+|  simulation. And it's for the TI-83+. And the 84+.  |
+|  And Linux. And the PalmOS. And the Sega Dreamcast. |
+|  And your Web Browser. And an empty pop can. The    |
+|  application of this to the previous sentence is    |
+|  left as an exercise for the reader.                |              
+|                                                     |              
+|  History of robotfindskitten                        |              
+|                                                     |              
+|  P. A. Peterson II originally stumbled across the   |              
+|  contest concept 'robotfindskitten' when perusing   |              
+|  Jake Berendes' web pages in 1996, which he found   |              
+|  via the Crupper Scupper Supper Upper and the       |              
+|  Flupperdupper Maleatora's early vision into        |              
+|  search-engine (and Web- Counter(tm)) tom-foolery.  |              
+|  Not led by the promise of porn, but instead by the |              
+|  10k-per-day hits their site got in 1996.           |              
+|  Jake had a contest for his friends called          |              
+|  "robotfindskitten", wherein they would submit      |              
+|  pictures depicting, well, robotfindskitten.        |              
+|                                                     |              
+|  Apparently not too many people submitted.          |              
+|                                                     |              
+|  Well, ok, two people submitted, but both of those  |              
+|  were drawings of a robot obliterating a kitten in  |              
+|  some way. kitten remained unfound.                 |              
+|                                                     |              
+|  Later, Peterson started "Nerth Pork", a            |              
+|  now-defunct webzine for the output of some good    |              
+|  stuff and a also a quite a lot of crap. Peterson   |              
+|  thought that moving the "robotfindskitten" contest |              
+|  to Nerth Pork would be useful, fun, and might      |              
+|  attract submissions.                               |              
+|                                                     |              
+|  It didn't.                 #                       |              
+|                                                     |              
+|  Well, not many.                                    |              
+|                                                     |              
+|  Leonard Richardson (of Crummy and segfault.org     |              
+|  fame) originally wrote "robotfindskitten" for DOS  |              
+|  in 1997 as his submission to the robotfindskitten  |              
+|  contest. It won first prize (the fact that there   |              
+|  were no other entrants may have had something to   |              
+|  do with it).                                       |              
+|                                                     |              
+|  In 1999, Richardson decided to rewrite             |              
+|  robotfindskitten for everyone's favorite operating |              
+|  system called Linux: Linux! Almost two years       |              
+|  later, robotfindskitten was rediscovered by        |              
+|  a bunch of free-software lunatics who thought that |              
+|  rfk love needed to be spread around.               |              
+|                                                     |             
+|  Hilarity ensued.                                   |              
+|                                                     |              
+|  Actually, everyone found great fulfillment in the  |              
+|  simulatedly being robot, finding kitten, and so    |              
+|  they decided that robotfindskitten needed to be    |              
+|  brought to the rest of the world.                  |              
+|                                                     |              
+|  And then came a PalmOS port. And then a CGI. And   |              
+|  then Dreamcast. And then GameBoy. And then         |              
+|  someone wrote robotfindskitten for an empty pop    |              
+|  can... you get the idea, and the rest...           |              
+|                                                     |              
+|  ...is history.                                     |              
+|                                                     |              
+|  Yet to be written.                                 |              
+|                                                     |              
+|  Now, kitten-finding-by-robot goodness is available |              
+|  to all for the cost of a download. The license?    |              
+|  GPL, of course.                                    |              
+|                                                     |              
+|  Enjoy.                                             |              
+|                                                     | 
++-----------------------------------------------------+ 
+|                                                     | 
+|  robotfindskitten for Your Calculator               | 
+|                                                     | 
+|  robotfindskitten is for the TI-84 Plus CE.  This   | 
+|  version will not work on other models. However,    | 
+|  there is a version for the TI-83+, TI-83+SE,       | 
+|  TI-84+, and TI-84+SE, and also one for the TI-84   | 
+|  Plus C SE.                                         |
+|                                                     | 
+|  robotfindskitten also requires a data appvar.      |
+|  You may place this appvar in the archive or keep   |
+|  it in RAM.                                         |
+|                                                     | 
+|  To run robotfindskitten, press 2nd+0 (zero), then  | 
+|  select Asm( from the menu and press Enter. Then,   | 
+|  select prgmRFK from the PRGM menu. The line of     |
+|  text displayed should read Asm(prgmRFK . Press     | 
+|  Enter to run the program.                          | 
+|                                                     | 
+|  The simulation itself should be pretty straight-   | 
+|  forward. The game will briefly explain itself.     | 
+|  Pressing any key on your calculator will start the | 
+|  simulation. Use the arrow keys to move. It is also | 
+|  possible to quit by pressing Clear, but you would  | 
+|  never want to do that before finding kitten, would | 
+|  you?                                               | 
+|                                                     | 
+|  If you see an error message saying that the        | 
+|  RFKDATA appvar cannot be found, then make sure the | 
+|  appvar named RFKDATA is on your calculator, and    | 
+|  is not corrupted; try resending the file.          | 
+|                                                     | 
++-----------------------------------------------------+ 
+|                                                     | 
+|  About & Credits                                    | 
+|                                                     | 
+|  This is a no-frills port of the TI-84+CSE version  | 
+|  I released in January 2014.                        | 
+|                                                     | 
+|  This program contains math routines provided by    | 
+|  Milos "baze" Bazelides                             | 
+|  http://baze.au.com/misc/z80bits.html               | 
+|  It also has routines provided by Zeda Thomas       | 
+|  xedaelnara@gmail.com                               |
+|                                                     | 
+|  The non-kitten-items list contains items from      | 
+|  various ports by other people, including           | 
+|  merthsoft's BASIC version. I also added a few of   | 
+|  my own objects.                                    | 
+|                                                     | 
+|  History                                            | 
+|                                                     | 
+|  15 May 2015                                        | 
+|   - Public release                                  | 
+|                                                     | 
++-----------------------------------------------------+ 
+|                                                     | 
+|  A FINAL THOUGHT                                    | 
+|  ---------------                                    |
+|                                                     |
+|  "Day and night I feverishly worked upon the        |
+|  machine, creating both a soul which could desire   |
+|  its goal, and a body with which it could realize   |
+|  it. Many who saw my creation called it an          |
+|  abomination, and denied me grant money. But they   |
+|  could not dissuade me from my impossible task. It  |
+|  was a spectre that tormented me always, a ghost I  |
+|  had to give a form and a life, lest it consume me  |
+|  from the inside.  And when at last my task was     |
+|  done, when the grey box on wheels was complete and |              
+|  when it, as well as I, knew what had to be done, I |              
+|  felt deep sympathy for the machine.  For I had not |              
+|  destroyed the phantom, but merely exorcized it     |              
+|  into another body. The robot knew not why this     |              
+|  task had to be performed, for I could not imbue it |              
+|  with knowledge I did not myself posess. And at the |              
+|  same time, I felt a sweeping sense of relief sweep |              
+|  over me, that somehow, the dream that had driven   |              
+|  me for my entire life had come one step closer to  |              
+|  fruition.  "As I vocally activated the robot, I    |              
+|  realized that it was following my instructions,    |              
+|  but not out of any desire to obey me. Had I        |              
+|  remained silent, it would have performed           |              
+|  exactly the same operations. We were two beings    |              
+|  controlled by the same force now. And yet, seeking |              
+|  vainly to hold some illusion of control over the   |              
+|  machine I thought I had created, I gave my final   |              
+|  command.                                           |              
+|                                                     |              
+|  "`GO!' I told the box as it began to roll out of   |              
+|  my workshop into the frozen desert beyond. `FIND   |              
+|  KITTEN!'"                                          |              
+|                                                     |              
+|        --The Book of Found Kittens, pages 43-4,     |              
+|          author unknown                             |              
+|                                                     |              
++-----------------------------------------------------+
+            r o b o t f i n d s k i t t e n  
++-----------------------------------------------------+ 
+| [-]                .::. .::.              |\_/|     | 
+| (+)=C              :::::::::              |o o|__   | 
+| | |                ':::::::'              =-*-=__\  | 
+| OOO                  ':::'               c_c__(___) | 
++-----------------------------------------------------+ 
+          -- finding kitten since 1997 -- 

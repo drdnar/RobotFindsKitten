@@ -10,24 +10,13 @@ SetTextMode:
 	ld	hl, lcdBpp8 | lcdPwr | lcdBgr
 	ld	(mpLcdCtrl), hl
 	ld	hl, mpLcdPalette
-	ld	de, mpLcdPalette + 1
-;	or	a
-;	sbc	hl, hl
-;	add	hl, de
-;	inc	de
-	ld	(hl), 00h
-	ldi
-	ldi
-	ld	(hl), 20h
-	ld	bc, 29
-	ldir
-	ld	a, 10h
-	ld	b, 240
+	xor	a
+	ld	b, 0
 paletteLoop:	; This could probably be optimized with LDI?
-	ld	(de), a
-	inc	de
-	ld	(de), a
-	inc	de
+	ld	(hl), a
+	inc	hl
+	ld	(hl), a
+	inc	hl
 	inc	a
 	djnz	paletteLoop
 	ret
@@ -97,6 +86,7 @@ NewLine:
 
 
 ;------ ClearEOL ---------------------------------------------------------------
+ClearEOL:
 ; Erases everything from the cursor to the right edge of the screen.
 ; Inputs:
 ;  - LCD cursor
@@ -108,8 +98,8 @@ NewLine:
 ;  - BC
 ;  - DE
 ;  - HL
-;  - IX
-ClearEOL:
+	push	ix
+	push	iy
 	ld	de, (lcdCol)
 	ld	hl, 320 - 1
 	or	a
@@ -136,7 +126,8 @@ clearEolLoop:
 	add	hl, de
 	dec	iyl
 	jr	nz, clearEolLoop
-	ld	iy, flags
+	pop	iy
+	pop	ix
 	ret
 
 
@@ -277,7 +268,7 @@ PutC_Delta		.equ	4
 	ld	l, (iy + PutC_Width)
 	add	hl, de
 	ld	(lcdCol), hl
-	ld	bc, 320
+	ld	bc, 320 + 1	; Easier than checking two flags
 	sbc	hl, bc
 	call	nc, NewLine	; Glyph will extend past right edge of screen, so force wrap
 ; VRAM offset
@@ -439,13 +430,9 @@ PutSCentered:
 	ld	h, 0
 	call	Locate
 	call	GetStrWidth
-	or	a
-	ld	a, h
-	rra
-	ld	d, a
-	ld	a, l
-	rra
-	ld	e, a
+	ex	de, hl
+	srl	d
+	rr	e
 	ld	hl, 320 / 2
 	or	a
 	sbc	hl, de

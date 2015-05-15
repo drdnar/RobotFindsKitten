@@ -10,7 +10,7 @@ font:
 fontWidthTable:
 	.db	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	.db	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-	.db	7	; ū ū
+	.db	9	; Heart
 	.db	3	;    
 	.db	3	; ! !
 	.db	6	; " "
@@ -106,7 +106,7 @@ fontWidthTable:
 	.db	3	; | |
 	.db	5	; } }
 	.db	8	; ~ ~
-	.db	10	; ∞ ∞
+	.db	10	; Thick space
 ; 
 ; GLYPH DATA TABLE
 fontDataTable:
@@ -211,21 +211,21 @@ fontDataTable:
 	.dl	fontChar7F - fontDataTable	; ∞ ∞
 ; 
 ; GLYPH DATA
-fontChar1F: ; ū ū
-	.db	00000000b
-	.db	00000000b
-	.db	00000000b
-	.db	01111000b
-	.db	00000000b
-	.db	11001100b
-	.db	11001100b
-	.db	11001100b
-	.db	11001100b
-	.db	11011100b
-	.db	01101100b
-	.db	00000000b
-	.db	00000000b
-	.db	00000000b
+fontChar1F: ; Heart
+	.db	00000000b, 00000000b
+	.db	00000000b, 00000000b
+	.db	00000000b, 00000000b
+	.db	00110110b, 00000000b
+	.db	01111111b, 00000000b
+	.db	01111111b, 00000000b
+	.db	01111111b, 00000000b
+	.db	01111111b, 00000000b
+	.db	00111110b, 00000000b
+	.db	00011100b, 00000000b
+	.db	00001000b, 00000000b
+	.db	00000000b, 00000000b
+	.db	00000000b, 00000000b
+	.db	00000000b, 00000000b
 fontChar20: ;    
 	.db	00000000b
 	.db	00000000b
@@ -1651,7 +1651,7 @@ fontChar7E: ; ~ ~
 	.db	00000000b
 	.db	00000000b
 	.db	00000000b
-fontChar7F: ; ∞ ∞
+fontChar7F: ; Thick space
 	.db	00000000b, 00000000b
 	.db	00000000b, 00000000b
 	.db	00000000b, 00000000b
