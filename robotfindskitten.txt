@@ -1,5 +1,5 @@
 +-----------------------------------------------------+ 
-| robotfindskitten TI-84 Plus CE         15 May 2015  | 
+| robotfindskitten TI-84 Plus CE         16 May 2015  | 
 | It's a readme, folded into the shape of a crane.    | 
 |                                                     | 
 +-----------------------------------------------------+ 
@@ -119,9 +119,42 @@
 |  appvar named RFKDATA is on your calculator, and    | 
 |  is not corrupted; try resending the file.          | 
 |                                                     | 
+|  robotfindskitten also supports reading the data    | 
+|  file from an alternative appvar. To select this    | 
+|  appvar, place the name of the appvar into Ans by   | 
+|  typing in the name of the appvar in quotes,        | 
+|  pressing enter (the name should appear on the      | 
+|  screen as confirmation), and the running the       | 
+|  program normally. Note that if the appvar is not   | 
+|  found or corrupted, no error message will be       | 
+|  presented if RFKDATA is found instead.             | 
+|                                                     | 
+|  To create your own data appvar, use the provided   | 
+|  appvar creator. It is Windows-only.                | 
+|  robotfindskitten uses specially compressed appvars | 
+|  to reduce data file size, usually by about half.   | 
+|  The program RfkHuffmanCoder takes a text file as   | 
+|  its input. Each line of text contains the text for | 
+|  a single non-kitten item. Text is limited to the   | 
+|  96 basic printable ASCII characters due both to    | 
+|  limits in the robotfindskitten font and mostly the | 
+|  Huffman tree format. If you drag-and-drop a file   | 
+|  onto the compressor, the output will always be     | 
+|  named like the input. The command line option -n   | 
+|  may be used to specify a different name.           | 
+|                                                     | 
+|  If you get an error message about the tree, this   | 
+|  means that you need to adjust letter frequencies.  | 
+|  To do so, use the command line option -g and enter | 
+|  some random letters not containing a space. Rare   | 
+|  letters like x, j, k, and q usually work best.     | 
+|                                                     | 
 +-----------------------------------------------------+ 
 |                                                     | 
 |  About & Credits                                    | 
+|                                                     | 
+|  Author:                                            | 
+|    Dr. D'nar drdnar@gmail.com                       | 
 |                                                     | 
 |  This is a no-frills port of the TI-84+CSE version  | 
 |  I released in January 2014.                        | 
@@ -139,6 +172,8 @@
 |                                                     | 
 |  History                                            | 
 |                                                     | 
+|  16 May 2015                                        | 
+|   - Added ability to read alternate NKI lists       | 
 |  15 May 2015                                        | 
 |   - Public release                                  | 
 |                                                     | 

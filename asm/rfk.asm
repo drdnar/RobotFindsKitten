@@ -42,6 +42,56 @@ _:	ld	de, (hl)
 	call	InitializeRandomRoutines
 	
 	; Search for data file
+	; Convert Ans into string in OP1+1
+	call	_AnsName
+	call	_FindSym
+	jr	c, defaultName
+	ld	a, (hl)
+	cp	StrngObj
+	jr	nz, defaultName
+	ex	de, hl
+	ld	a, (hl)
+	inc	hl
+	or	a
+	jr	z, defaultName
+	cp	16
+	jr	nc, defaultName
+	ld	b, a
+	ld	a, (hl)
+	inc	hl
+	or	a
+	jr	nz, defaultName
+	ld	de, OP1 + 1
+_:	push	de
+	push	bc
+	push	hl
+	call	_Get_Tok_Strng
+	pop	hl
+	ld	a, c
+	cp	1
+	jr	nz, errorTwoPops
+	ld	a, (hl)
+	call	_IsA2ByteTok
+	jr	nz, +_
+	inc	hl
+_:	inc	hl
+	pop	bc
+	pop	de
+	ld	a, (OP3)
+;	b_call(_PutC)
+	ld	(de), a
+	inc	de
+	djnz	--_
+	; OK, we've detokenized the name, now check if there's data.
+	ld	a, AppVarObj
+	ld	(OP1), a
+	call	VerifyDataFile
+	jr	z, defaultName
+	jr	dataFileFound	
+errorTwoPops:
+	pop	af
+	pop	af
+defaultName:
 	ld	hl, rfkDataName
 	call	_Mov9ToOP1
 	call	VerifyDataFile

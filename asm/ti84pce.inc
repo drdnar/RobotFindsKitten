@@ -374,6 +374,12 @@ _ClrScrnFull	equ	020810h
 _ClrScrn	equ	020814h
 _ClrTxtShd	equ	020818h
 _ClrWindow	equ	02081ch
+_FindSym	equ	020510h
+_AnsName	equ	020FF4h
+_IsA2ByteTok	equ	0204ach
+_Get_Tok_Strng	equ	020870h
+_GetTokString	equ	020874h
+
 
 ;====== RAM Locations/Address Space ============================================
 
