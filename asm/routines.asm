@@ -129,6 +129,7 @@ ClearMem:
 	ret
 
 
+#IFDEF	NEVER
 ;------ MultHlByA --------------------------------------------------------------
 MultHlByA:
 ; Multiplies 16-bit HL by A.
@@ -155,6 +156,7 @@ MultHlByA:
 	add	hl, hl
 	add	hl, de
 	ret
+#ENDIF
 
 	
 ;------ GetRtcTimeLinear -------------------------------------------------------
@@ -225,6 +227,7 @@ rtcHighBitLoop:
 	ret
 
 
+#IFDEF	NEVER
 ;------ Mult10 -----------------------------------------------------------------
 Mult10:
 ; Multiplies HL by ten.
@@ -241,6 +244,7 @@ Mult10:
 	add	hl, hl
 	add	hl, de
 	ret
+#ENDIF
 
 
 ;------ MultBcByHl -------------------------------------------------------------
@@ -270,6 +274,7 @@ MultBcByHl:
 	ret
 
 
+#IFDEF	NEVER
 ;------ DivDByE ----------------------------------------------------------------
 DivDByE:
 ; Divides D by E
@@ -462,3 +467,4 @@ GetStrLength:
 	ret
 
 
+#ENDIF
