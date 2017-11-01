@@ -51,17 +51,15 @@ _:	ld	bc, 0
 deHuffmanDone:
 	and	7Fh
 	ld	(de), a
+	inc	de
+	ret	z
 	dec	ix
 	ld	a, ixh
 	or	ixl
 	jp	z, Panic
-	ld	a, (de)
-	inc	de
-	or	a
-	jr	nz, deHuffmanLoop
-	ret
-	
-	
+	jr	deHuffmanLoop
+
+
 ;------ HuffmanGetNextBit ------------------------------------------------------
 HuffmanGetNextBit:
 ; Gets the next bit from the Huffman code stream.
@@ -88,7 +86,7 @@ _:	ld	(currentBit), a
 	ld	a, (currentByte)
 	rrca
 	ld	(currentByte), a
-	sbc	a, a
+	sbc	a, a	; Return 00 or FF
 ;	pop	bc
 	pop	de
 	pop	hl

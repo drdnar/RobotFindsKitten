@@ -40,8 +40,8 @@ robj:	; Random item
 	ld	bc, (itemsCount)
 	call	RandRange16
 ;	dec	hl	; I'm not sure what this was for? Range?
-	; Check for duplicate objects
 ;#ifdef	NEVER
+	; Check for duplicate objects
 	ex	de, hl
 	ld	hl, objectArray
 	ld	a, (objectCount)
