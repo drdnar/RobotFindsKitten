@@ -5,6 +5,8 @@ font:
 ; FirstChar = 31
 ; LastChar = 127
 	.db	14	; font height
+	.dl	fontWidthTable - font
+	.dl	fontDataTable - font
 ; 
 ; GLYPH WIDTH TABLE
 fontWidthTable:
