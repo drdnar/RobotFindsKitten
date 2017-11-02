@@ -402,7 +402,8 @@ BranchOnA:
 ;	.db	anotherValue
 ;	.dl	anotherBranchTarget
 ;	&c.
-; Can be either called or jumped to.
+; Can be either called or jumped to.  Be mindful that, if jumped to, it will
+; still RET if the input value isn't found in the table.
 ; Inputs:
 ;  - A: Value to branch on
 ;  - HL: Pointer to table mapping bytes to jump addresses
@@ -413,6 +414,7 @@ BranchOnA:
 ; Destroys:
 ;  - All
 	ld	b, (hl)
+	inc	hl
 _:	cp	(hl)
 	inc	hl
 	jr	z, +_
@@ -421,8 +423,7 @@ _:	cp	(hl)
 	inc	hl
 	djnz	-_
 	ret
-_:	ld	de, (hl)
-	ex	de, hl
+_:	ld	hl, (hl)
 	jp	(hl)
 
 
@@ -439,10 +440,10 @@ GetStrIndexed:
 	push	bc
 	ld	b, a
 	xor	a
-_gsia:	cp	(hl)
+_:	cp	(hl)
 	inc	hl
-	jr	nz, _gsia
-	djnz	_gsia
+	jr	nz, _-
+	djnz	_-
 	pop	bc
 	ret
 
@@ -456,15 +457,24 @@ GetStrLength:
 ;  - HL: Length
 ;  - DE: Ptr to string
 ; Destroys:
+;  - AF
 ;  - BC
 	ld	bc, 0
 	xor	a
 	ex	de, hl
+	sbc	hl, hl
 	add	hl, de
 	cpir
-	or	a
+;	or	a
 	sbc	hl, de
 	ret
-
-
+; Ever so slightly faster alternate version which doesn't return your original
+; pointer.
+;	ld	bc, 0
+;	xor	a
+;	cpir
+;	sbc	hl, hl
+;	scf
+;	sbc	hl, bc
+;	ret
 #ENDIF
